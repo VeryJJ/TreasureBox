@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huangshang.demo.center.dao.MybatisTestMapper">
+
+  <resultMap id="MybatisTestMap" type="com.huangshang.demo.center.model.MybatisTestDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" property="name" />
+    <result column="create_at" property="createAt" />
+  </resultMap>
+
+
+  <sql id="table">
+    springmybatis
+  </sql>
+
+  <select id="query" parameterType="long" resultType="java.lang.String">
+    select name from <include refid="table"/> where id = #{id}
+  </select>
+
+
+
+  <insert id="insert" parameterType="java.lang.String" useGeneratedKeys="true">
+    insert into <include refid="table"/> (name, create_at)
+    values (#{name}, now())
+  </insert>
+
+
+</mapper>
