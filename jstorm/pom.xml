@@ -15,11 +15,12 @@
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/com.alibaba.jstorm/jstorm-core -->
-        <!--<dependency>-->
-            <!--<groupId>com.alibaba.jstorm</groupId>-->
-            <!--<artifactId>jstorm-core</artifactId>-->
-            <!--<version>2.2.1</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.alibaba.jstorm</groupId>
+            <artifactId>jstorm-core</artifactId>
+            <version>2.2.1</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
 
 
         <!-- Storm spout源-->

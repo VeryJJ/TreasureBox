@@ -1,25 +1,24 @@
-package com.huangshang.demo.jstorm.case_redis;
+package com.huangshang.demo.jstorm;
 
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.generated.AlreadyAliveException;
-import backtype.storm.generated.AuthorizationException;
 import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.topology.TopologyBuilder;
-import org.apache.storm.redis.bolt.RedisLookupBolt;
-import org.apache.storm.redis.bolt.RedisStoreBolt;
+import com.huangshang.demo.jstorm.case_redis.MyRedisStoreBolt;
+import com.huangshang.demo.jstorm.case_redis.RedisWriteMapper;
+import com.huangshang.demo.jstorm.case_redis.RedisWriteSpout;
 import org.apache.storm.redis.common.config.JedisPoolConfig;
-import org.apache.storm.redis.common.mapper.RedisLookupMapper;
 import org.apache.storm.redis.common.mapper.RedisStoreMapper;
 
 /**
- * Created by huangshang on 2018/8/25 下午9:21.
+ * Created by huangshang on 2018/8/27 下午8:36.
  * Description: ***
  *
  * @author <a href="mailto:chenjie@cai-inc.com"/>
  */
-public class RedisMain {
+public class MyTopologyStarter {
     private static Boolean isLocalMode = Boolean.FALSE;
 
     public static void main(String[] args) throws Exception {
@@ -27,7 +26,7 @@ public class RedisMain {
 //            isLocalMode = Boolean.FALSE;
 //        }
 
-		writeRedis();
+        writeRedis();
 //        readRedis();
     }
     /**
@@ -97,5 +96,4 @@ public class RedisMain {
             }
         }
     }
-
 }
