@@ -1,16 +1,12 @@
 package com.huangshang.demo.jstorm.kafka;
 
 import backtype.storm.Config;
-import backtype.storm.LocalCluster;
-import backtype.storm.StormSubmitter;
-import backtype.storm.generated.AlreadyAliveException;
-import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.topology.TopologyBuilder;
-import com.alibaba.jstorm.client.ConfigExtension;
 import com.huangshang.demo.jstorm.Utils.AbstractTopologyStarter;
+import com.huangshang.demo.jstorm.kafka.bolts.KafkaMsgReadBolt;
+import com.huangshang.demo.jstorm.kafka.bolts.MySQLBolt;
 import com.huangshang.demo.jstorm.kafka.plugin.KafkaSpout;
 import com.huangshang.demo.jstorm.kafka.plugin.KafkaSpoutConfig;
-import com.huangshang.demo.jstorm.kafka.bolts.CustomBolt;
 import com.huangshang.demo.jstorm.kafka.util.PropertiesUtil;
 
 import java.util.Map;
@@ -42,7 +38,8 @@ public class MyKafkaTopology extends AbstractTopologyStarter{
 
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("kafkaSpout", new KafkaSpout(spoutConfig));
-        builder.setBolt("customBolt", new CustomBolt(), 1).shuffleGrouping("kafkaSpout");
+        builder.setBolt("kafkaMsgReadBolt", new KafkaMsgReadBolt(), 1).shuffleGrouping("kafkaSpout");
+        builder.setBolt("MySQLStoreBolt", new MySQLBolt(), 1).shuffleGrouping("kafkaMsgReadBolt");
 
         return builder;
     }

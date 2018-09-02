@@ -35,7 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ZkState {
-    public static final Logger LOG = LoggerFactory.getLogger(ZkState.class);
+//    public static final Logger LOG = LoggerFactory.getLogger(ZkState.class);
     CuratorFramework _curator;
 
     private CuratorFramework newCurator(Map conf, KafkaSpoutConfig config) throws Exception {
@@ -63,7 +63,7 @@ public class ZkState {
     }
 
     public void writeJSON(String path, Map<Object, Object> data) {
-        LOG.info("Writing " + path + " the data " + data.toString());
+        System.err.printf("Writing " + path + " the data " + data.toString());
         writeBytes(path, JSONValue.toJSONString(data).getBytes(Charset.forName("UTF-8")));
     }
 
@@ -85,8 +85,9 @@ public class ZkState {
     public Map<Object, Object> readJSON(String path) {
         try {
             byte[] b = readBytes(path);
-            if (b == null)
+            if (b == null) {
                 return null;
+            }
             return (Map<Object, Object>) JSONValue.parse(new String(b, "UTF-8"));
         } catch (Exception e) {
             throw new RuntimeException(e);

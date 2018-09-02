@@ -34,7 +34,7 @@ public class KafkaSpout implements IRichSpout {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static Logger LOG = LoggerFactory.getLogger(KafkaSpout.class);
+//	private static Logger LOG = LoggerFactory.getLogger(KafkaSpout.class);
 
 	protected SpoutOutputCollector collector;
 	

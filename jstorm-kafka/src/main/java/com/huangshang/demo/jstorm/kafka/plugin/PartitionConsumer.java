@@ -45,7 +45,7 @@ import backtype.storm.utils.Utils;
  *
  */
 public class PartitionConsumer {
-    private static Logger LOG = LoggerFactory.getLogger(PartitionConsumer.class);
+//    private static Logger LOG = LoggerFactory.getLogger(PartitionConsumer.class);
 
     static enum EmitState {
         EMIT_MORE, EMIT_END, EMIT_NONE
@@ -81,7 +81,8 @@ public class PartitionConsumer {
                 jsonOffset = (Long) json.get("offset");
             }
         } catch (Throwable e) {
-            LOG.warn("Error reading and/or parsing at ZkNode: " + zkPath(), e);
+            System.err.printf("Error reading and/or parsing at ZkNode: " + zkPath(), e);
+//            LOG.warn("Error reading and/or parsing at ZkNode: " + zkPath(), e);
         }
 
         try {
@@ -96,7 +97,7 @@ public class PartitionConsumer {
                 emittingOffset = lastCommittedOffset;
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            System.err.printf(e.getMessage(), e);
         }
     }
 
@@ -116,7 +117,7 @@ public class PartitionConsumer {
 
             if (tups != null) {
                 for (List<Object> tuple : tups) {
-                    LOG.debug("emit message {}", new String(Utils.toByteArray(toEmitMsg.message().payload())));
+                    System.out.printf("emit message {}", new String(Utils.toByteArray(toEmitMsg.message().payload())));
                     collector.emit(tuple, new KafkaMessageId(partition, toEmitMsg.offset()));
                 }
                 if(count>=config.batchSendCount) {
@@ -142,7 +143,7 @@ public class PartitionConsumer {
             msgs = consumer.fetchMessages(partition, emittingOffset + 1);
             
             if (msgs == null) {
-                LOG.error("fetch null message from offset {}", emittingOffset);
+                System.err.printf("fetch null message from offset {}", emittingOffset);
                 return;
             }
             
@@ -152,13 +153,13 @@ public class PartitionConsumer {
                 emittingMessages.add(msg);
                 emittingOffset = msg.offset();
                 pendingOffsets.add(emittingOffset);
-                LOG.debug("fillmessage fetched a message:{}, offset:{}", msg.message().toString(), msg.offset());
+                System.out.printf("fillmessage fetched a message:{}, offset:{}", msg.message().toString(), msg.offset());
             }
             long end = System.currentTimeMillis();
-            LOG.info("fetch message from partition:"+partition+", offset:" + emittingOffset+", size:"+msgs.sizeInBytes()+", count:"+count +", time:"+(end-start));
+            System.out.printf("fetch message from partition:"+partition+", offset:" + emittingOffset+", size:"+msgs.sizeInBytes()+", count:"+count +", time:"+(end-start));
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error(e.getMessage(),e);
+            System.err.printf(e.getMessage(),e);
         }
     }
 
@@ -181,7 +182,7 @@ public class PartitionConsumer {
                 lastCommittedOffset = lastOffset;
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            System.err.printf(e.getMessage(), e);
         }
 
     }
@@ -190,7 +191,7 @@ public class PartitionConsumer {
         try {
             pendingOffsets.remove(offset);
         } catch (Exception e) {
-            LOG.error("offset ack error " + offset);
+            System.err.printf("offset ack error " + offset);
         }
     }
 

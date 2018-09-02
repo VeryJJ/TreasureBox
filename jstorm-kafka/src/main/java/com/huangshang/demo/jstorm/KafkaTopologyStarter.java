@@ -9,7 +9,7 @@ import com.huangshang.demo.jstorm.kafka.MyKafkaTopology;
  * @author <a href="mailto:chenjie@cai-inc.com"/>
  */
 public class KafkaTopologyStarter {
-    private static Boolean isLocalMode = Boolean.TRUE;
+    private static Boolean isLocalMode = Boolean.FALSE;
 
     public static void main(String[] args) throws Exception {
 

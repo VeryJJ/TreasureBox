@@ -3,13 +3,13 @@ package com.huangshang.demo.jstorm.kafka.bolts;
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
+import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.TupleImplExt;
+import backtype.storm.tuple.Values;
 import com.huangshang.demo.jstorm.kafka.util.ByteUtil;
-import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
-import java.util.logging.Logger;
 
 /**
  * Created by huangshang on 2018/9/1 上午4:58.
@@ -17,17 +17,19 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:chenjie@cai-inc.com"/>
  */
-public class CustomBolt extends BaseBasicBolt {
+public class KafkaMsgReadBolt extends BaseBasicBolt {
     private static final long serialVersionUID = 1472482932572704961L;
-//    protected final Logger logger = LoggerFactory.getLogger(CustomBolt.class);
+//    protected final Logger logger = LoggerFactory.getLogger(KafkaMsgReadBolt.class);
 
     @Override
     public void execute(Tuple input, BasicOutputCollector collector) {
         try {
 
-            String ss = ByteUtil.getStringFromByteArray((byte[]) ((TupleImplExt) input).get("bytes"));
-            System.out.println("CustomBolt#execute   kafkaMsg = " + ss);
-//            logger.info(ss);
+            String content = ByteUtil.getStringFromByteArray((byte[]) ((TupleImplExt) input).get("bytes"));
+            System.out.println("KafkaMsgReadBolt#execute kafkaMsg = " + content);
+
+            collector.emit(toTuple(content));
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -35,6 +37,14 @@ public class CustomBolt extends BaseBasicBolt {
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        System.err.println("declareOutputFields");
+        declarer.declare(new Fields("kafka-data"));
+//        System.err.println("customBolt#declareOutputFields");
+    }
+
+    private Values toTuple(String msgContent){
+        Values values = new Values();
+        values.add(msgContent);
+
+        return values;
     }
 }
