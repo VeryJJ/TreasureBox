@@ -15,6 +15,7 @@
     <module>app</module>
     <module>jstorm-redis</module>
     <module>jstorm-kafka</module>
+    <module>share-demo</module>
   </modules>
   <packaging>pom</packaging>
 
